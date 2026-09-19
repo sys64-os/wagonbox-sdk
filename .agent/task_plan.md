@@ -220,34 +220,34 @@ TASK-017 → TASK-018 (Build pipeline feeds loader verification)
 
 ## ✅ Acceptance Criteria (Per sdk.md §84)
 
-- [ ] `@wagonbox/sdk` package identity correct
-- [ ] CoreBridge is primary in-process boundary
-- [ ] CoreBridge differentiated from UDS
-- [ ] Core remains authority
-- [ ] Manifest capabilities = declarations, not grants
-- [ ] Core does runtime capability enforcement
-- [ ] License entitlement checked by Core
-- [ ] Route registration via Core
-- [ ] WebSocket/event access via Core
-- [ ] Module storage namespaced
-- [ ] No raw SQLCipher connection
-- [ ] File access via Core-controlled API
-- [ ] Command execution = structured command + args
-- [ ] Module never receives root password
-- [ ] Privileged ops support step-up
-- [ ] Audit by Core
-- [ ] Secrets not in logs
-- [ ] Module lifecycle supports graceful shutdown
-- [ ] SDK/Core compatibility verified
-- [ ] V8 bytecode not considered sandbox
-- [ ] No unrestricted Node.js privileges
-- [ ] Module-to-module via Core boundary
-- [ ] `.wbmod` verified before execution
-- [ ] No persistent source extraction
-- [ ] Structured errors available
-- [ ] Timeout/cancellation for long-running ops
-- [ ] Integration tests verify capability + lifecycle
-- [ ] Public SDK contract documented
+- [x] `@wagonbox/sdk` package identity correct
+- [x] CoreBridge is primary in-process boundary
+- [x] CoreBridge differentiated from UDS
+- [x] Core remains authority
+- [x] Manifest capabilities = declarations, not grants
+- [x] Core does runtime capability enforcement
+- [x] License entitlement checked by Core
+- [x] Route registration via Core
+- [x] WebSocket/event access via Core
+- [x] Module storage namespaced
+- [x] No raw SQLCipher connection
+- [x] File access via Core-controlled API
+- [x] Command execution = structured command + args
+- [x] Module never receives root password
+- [x] Privileged ops support step-up
+- [x] Audit by Core
+- [x] Secrets not in logs
+- [x] Module lifecycle supports graceful shutdown
+- [x] SDK/Core compatibility verified
+- [x] V8 bytecode not considered sandbox
+- [x] No unrestricted Node.js privileges
+- [x] Module-to-module via Core boundary
+- [x] `.wbmod` verified before execution
+- [x] No persistent source extraction
+- [x] Structured errors available
+- [x] Timeout/cancellation for long-running ops
+- [x] Integration tests verify capability + lifecycle
+- [x] Public SDK contract documented
 
 ---
 
