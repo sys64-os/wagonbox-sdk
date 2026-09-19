@@ -149,7 +149,24 @@ export type CoreCapability =
   | 'storage.read'
   | 'storage.write'
   | 'storage.list'
-  | 'storage.remove';
+  | 'storage.remove'
+  | 'system.read'
+  | 'system.manage'
+  | 'network.read'
+  | 'network.configure'
+  | 'storage.configure'
+  | 'user.read'
+  | 'user.manage'
+  | 'file.read'
+  | 'file.write'
+  | 'terminal.execute'
+  | 'license.read'
+  | 'license.activate'
+  | 'cluster.read'
+  | 'cluster.manage'
+  | 'audit.read'
+  | 'modules.read'
+  | 'modules.manage';
 
 /**
  * Context injected into a module by the Naked Kernel V8 Sandbox.
@@ -171,7 +188,7 @@ export interface CoreBridge {
   request<T>(event: string, payload: object): Promise<T>;
   on(event: string, listener: (...args: unknown[]) => void): void;
   off(event: string, listener: (...args: unknown[]) => void): void;
-  emit(event: string, data: unknown): Promise<void>;
+  emitEvent(event: string, data: unknown): boolean;
   connect(): Promise<void>;
   disconnect(): Promise<void>;
   isConnected(): boolean;
@@ -427,10 +444,20 @@ export const CAPABILITY_GROUPS: {
   config: CoreCapability[];
   api: CoreCapability[];
   storage: CoreCapability[];
+  system: CoreCapability[];
+  network: CoreCapability[];
+  storage_mgmt: CoreCapability[];
+  user: CoreCapability[];
+  file: CoreCapability[];
+  terminal: CoreCapability[];
+  license: CoreCapability[];
+  cluster: CoreCapability[];
+  audit: CoreCapability[];
+  modules: CoreCapability[];
   all: CoreCapability[];
 };
 
-export function createCapabilitySet(...groups: ('shell' | 'config' | 'api' | 'storage' | 'all')[]): CapabilitySet;
+export function createCapabilitySet(...groups: ('shell' | 'config' | 'api' | 'storage' | 'system' | 'network' | 'storage_mgmt' | 'user' | 'file' | 'terminal' | 'license' | 'cluster' | 'audit' | 'modules' | 'all')[]): CapabilitySet;
 export function validateCapabilities(capabilities: string[]): { valid: CoreCapability[]; invalid: string[] };
 export function negotiateCapabilities(requested: CoreCapability[], granted: CoreCapability[]): { granted: CoreCapability[]; denied: CoreCapability[] };
 
