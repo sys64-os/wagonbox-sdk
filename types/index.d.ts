@@ -9,6 +9,135 @@ import { EventEmitter } from 'node:events';
 export const PLUGIN_PROTOCOL = 'wagonbox.plugin.v1' as const;
 
 /**
+ * Error codes per api.md §39
+ */
+export type ErrorCode =
+  | 'AUTH_REQUIRED'
+  | 'AUTH_INVALID'
+  | 'SESSION_EXPIRED'
+  | 'FORBIDDEN'
+  | 'CAPABILITY_DENIED'
+  | 'LICENSE_REQUIRED'
+  | 'LICENSE_INVALID'
+  | 'LICENSE_EXPIRED'
+  | 'ENTITLEMENT_DENIED'
+  | 'MODULE_INVALID'
+  | 'MODULE_INCOMPATIBLE'
+  | 'MODULE_SIGNATURE_INVALID'
+  | 'HWID_MISMATCH'
+  | 'STEP_UP_REQUIRED'
+  | 'STEP_UP_INVALID'
+  | 'VALIDATION_ERROR'
+  | 'RESOURCE_NOT_FOUND'
+  | 'CONFLICT'
+  | 'RATE_LIMITED'
+  | 'INTERNAL_ERROR';
+
+export const ERROR_CODES: Record<ErrorCode, ErrorCode> = {
+  AUTH_REQUIRED: 'AUTH_REQUIRED',
+  AUTH_INVALID: 'AUTH_INVALID',
+  SESSION_EXPIRED: 'SESSION_EXPIRED',
+  FORBIDDEN: 'FORBIDDEN',
+  CAPABILITY_DENIED: 'CAPABILITY_DENIED',
+  LICENSE_REQUIRED: 'LICENSE_REQUIRED',
+  LICENSE_INVALID: 'LICENSE_INVALID',
+  LICENSE_EXPIRED: 'LICENSE_EXPIRED',
+  ENTITLEMENT_DENIED: 'ENTITLEMENT_DENIED',
+  MODULE_INVALID: 'MODULE_INVALID',
+  MODULE_INCOMPATIBLE: 'MODULE_INCOMPATIBLE',
+  MODULE_SIGNATURE_INVALID: 'MODULE_SIGNATURE_INVALID',
+  HWID_MISMATCH: 'HWID_MISMATCH',
+  STEP_UP_REQUIRED: 'STEP_UP_REQUIRED',
+  STEP_UP_INVALID: 'STEP_UP_INVALID',
+  VALIDATION_ERROR: 'VALIDATION_ERROR',
+  RESOURCE_NOT_FOUND: 'RESOURCE_NOT_FOUND',
+  CONFLICT: 'CONFLICT',
+  RATE_LIMITED: 'RATE_LIMITED',
+  INTERNAL_ERROR: 'INTERNAL_ERROR',
+} as const;
+
+export interface WagonboxErrorDetails {
+  code: ErrorCode;
+  message: string;
+  details?: unknown;
+  statusCode?: number;
+}
+
+export declare class WagonboxError extends Error {
+  public readonly code: ErrorCode;
+  public readonly details?: unknown;
+  public readonly statusCode: number;
+  constructor(details: WagonboxErrorDetails);
+  toJSON(): Record<string, unknown>;
+  static isWagonboxError(error: unknown): error is WagonboxError;
+}
+
+export declare class AuthRequiredError extends WagonboxError {
+  constructor(message?: string, details?: unknown);
+}
+export declare class AuthInvalidError extends WagonboxError {
+  constructor(message?: string, details?: unknown);
+}
+export declare class SessionExpiredError extends WagonboxError {
+  constructor(message?: string, details?: unknown);
+}
+export declare class ForbiddenError extends WagonboxError {
+  constructor(message?: string, details?: unknown);
+}
+export declare class CapabilityDeniedError extends WagonboxError {
+  constructor(capability: string, details?: unknown);
+}
+export declare class LicenseRequiredError extends WagonboxError {
+  constructor(message?: string, details?: unknown);
+}
+export declare class LicenseInvalidError extends WagonboxError {
+  constructor(message?: string, details?: unknown);
+}
+export declare class LicenseExpiredError extends WagonboxError {
+  constructor(message?: string, details?: unknown);
+}
+export declare class EntitlementDeniedError extends WagonboxError {
+  constructor(feature: string, details?: unknown);
+}
+export declare class ModuleInvalidError extends WagonboxError {
+  constructor(message?: string, details?: unknown);
+}
+export declare class ModuleIncompatibleError extends WagonboxError {
+  constructor(message?: string, details?: unknown);
+}
+export declare class ModuleSignatureInvalidError extends WagonboxError {
+  constructor(message?: string, details?: unknown);
+}
+export declare class HwidMismatchError extends WagonboxError {
+  constructor(message?: string, details?: unknown);
+}
+export declare class StepUpRequiredError extends WagonboxError {
+  constructor(message?: string, details?: unknown);
+}
+export declare class StepUpInvalidError extends WagonboxError {
+  constructor(message?: string, details?: unknown);
+}
+export declare class ValidationError extends WagonboxError {
+  constructor(message: string, details?: unknown);
+}
+export declare class ResourceNotFoundError extends WagonboxError {
+  constructor(resource: string, details?: unknown);
+}
+export declare class ConflictError extends WagonboxError {
+  constructor(message?: string, details?: unknown);
+}
+export declare class RateLimitedError extends WagonboxError {
+  constructor(message?: string, details?: unknown);
+}
+export declare class InternalError extends WagonboxError {
+  constructor(message?: string, details?: unknown);
+}
+
+export function createError(code: ErrorCode, message: string, details?: unknown): WagonboxError;
+export function isErrorCode(code: string): code is ErrorCode;
+export const ERROR_HTTP_STATUS: Record<ErrorCode, number>;
+
+/**
  * Core capabilities that modules can request.
  */
 export type CoreCapability =
@@ -317,3 +446,35 @@ export declare class MockCoreBridge extends EventEmitter implements CoreBridge {
   getConfig(): Record<string, string>;
   simulateEvent(event: string, data: unknown): void;
 }
+
+/**
+ * Error class exports
+ */
+export {
+  WagonboxError,
+  AuthRequiredError,
+  AuthInvalidError,
+  SessionExpiredError,
+  ForbiddenError,
+  CapabilityDeniedError,
+  LicenseRequiredError,
+  LicenseInvalidError,
+  LicenseExpiredError,
+  EntitlementDeniedError,
+  ModuleInvalidError,
+  ModuleIncompatibleError,
+  ModuleSignatureInvalidError,
+  HwidMismatchError,
+  StepUpRequiredError,
+  StepUpInvalidError,
+  ValidationError,
+  ResourceNotFoundError,
+  ConflictError,
+  RateLimitedError,
+  InternalError,
+  ERROR_CODES,
+  type ErrorCode,
+  createError,
+  isErrorCode,
+  ERROR_HTTP_STATUS,
+};

@@ -11,6 +11,33 @@ export { WagonboxModule } from './lib/module.js';
 export { CoreBridgeBase as CoreBridge, MockCoreBridge } from './lib/core-bridge.js';
 export { CapabilitySet, CAPABILITY_GROUPS, createCapabilitySet, validateCapabilities, negotiateCapabilities } from './lib/capabilities.js';
 export { PLUGIN_PROTOCOL, SDK_VERSION, DEFAULT_TIMEOUT_MS, CORE_CAPABILITIES } from './lib/constants.js';
+export {
+  WagonboxError,
+  AuthRequiredError,
+  AuthInvalidError,
+  SessionExpiredError,
+  ForbiddenError,
+  CapabilityDeniedError,
+  LicenseRequiredError,
+  LicenseInvalidError,
+  LicenseExpiredError,
+  EntitlementDeniedError,
+  ModuleInvalidError,
+  ModuleIncompatibleError,
+  ModuleSignatureInvalidError,
+  HwidMismatchError,
+  StepUpRequiredError,
+  StepUpInvalidError,
+  ValidationError,
+  ResourceNotFoundError,
+  ConflictError,
+  RateLimitedError,
+  InternalError,
+  ERROR_CODES,
+  createError,
+  isErrorCode,
+  ERROR_HTTP_STATUS,
+} from './lib/errors.js';
 
 /**
  * Initialization result type
