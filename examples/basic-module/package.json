@@ -1,0 +1,11 @@
+{
+  "name": "wagonbox-example-hello",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "@wagonbox/sdk": "github:sys64-os/wagonbox-sdk"
+  },
+  "scripts": {
+    "build:wbmod": "bash ./build-wbmod.sh"
+  }
+}

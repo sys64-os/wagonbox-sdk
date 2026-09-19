@@ -1,0 +1,35 @@
+{
+  "name": "@wagonbox/sdk",
+  "version": "1.0.0",
+  "description": "Public Development SDK for WagonBox Extensions and UI Modules",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/types/index.d.ts",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "build": "node scripts/build-sdk.mjs",
+    "prepare": "node scripts/build-sdk.mjs",
+    "prepublishOnly": "npm run lint && npm test && npm run build",
+    "lint": "eslint lib/ types/",
+    "test": "node --test test/**/*.test.js",
+    "test:watch": "node --watch --test test/**/*.test.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "esbuild": "^0.23.0",
+    "eslint": "^9.0.0",
+    "typescript": "^5.5.0"
+  },
+  "peerDependencies": {
+    "zod": "^3.23.0"
+  }
+}

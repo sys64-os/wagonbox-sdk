@@ -1,0 +1,26 @@
+{
+  "name": "wagonbox-example-hello",
+  "version": "1.0.0",
+  "sdkApi": "wagonbox.plugin.v1",
+  "minCoreVersion": "1.0.0",
+  "license": "MIT",
+  "entryPoint": "src/index.js",
+  "requestedCapabilities": [
+    "shell.execute",
+    "config.read",
+    "storage.read",
+    "storage.write",
+    "api.register"
+  ],
+  "apiNamespace": "hello",
+  "methods": [
+    "hello.sayHello"
+  ],
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/hello",
+      "handler": "hello.sayHello"
+    }
+  ]
+}
