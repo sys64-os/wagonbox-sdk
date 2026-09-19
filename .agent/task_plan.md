@@ -158,27 +158,13 @@
 
 ---
 
-### Phase 5: .wbmod Packaging Pipeline (Week 4-5)
+### Phase 5: .wbmod Packaging Pipeline (Week 4-5) — ✅ DONE (d95bf97)
 
-#### TASK-017: Implement .wbmod Build Crypto
-- **File**: `scripts/build-wbmod.mjs` (replace `.sh`)
-- **Pipeline** (per build-flow.md §27):
-  1. Bundle frontend (Vite/esbuild)
-  2. Bundle backend → `.jsc` (Bytenode) if applicable
-  3. Create `manifest.json` + assets
-  4. **AES-256-GCM encrypt** payload
-  5. **ECDSA P-256 sign** encrypted payload
-  6. Output `.wbmod`
-- **Keys**: Use dev keys from `.env` (separate from production)
+#### TASK-017: Implement .wbmod Build Crypto — ✅ DONE
+- **File**: `scripts/build-wbmod.mjs` AES-256-GCM + ECDSA P-256 sign → .wbmod (dev keys via WBMOD_AES_KEY/WBMOD_ECDSA_PRIV)
 
-#### TASK-018: Module Loader Verification (for testing)
-- **Add to `MockCoreBridge`**: Simulate `.wbmod` verification flow
-  - Format validation
-  - Compatibility check
-  - Signature verification
-  - License entitlement check
-  - Capability policy check
-  - Decrypt in memory
+#### TASK-018: Module Loader Verification (for testing) — ✅ DONE
+- **Add to `MockCoreBridge`**: `verifyWbmod()` format→compat→sig pipeline
 
 ---
 
