@@ -472,7 +472,17 @@ export declare class MockCoreBridge extends EventEmitter implements CoreBridge {
   setConfig(config: Record<string, string>): void;
   getConfig(): Record<string, string>;
   simulateEvent(event: string, data: unknown): void;
+  verifyWbmod(wbmod: unknown): Promise<{ ok: boolean; step: string; errors: string[] }>;
 }
+export declare class NetworkGateway { constructor(b: CoreBridge, caps: Set<CoreCapability>); interfaces(): Promise<unknown>; connections(): Promise<unknown>; get(id: string): Promise<unknown>; configure(input: object): Promise<unknown>; up(id: string): Promise<unknown>; down(id: string): Promise<unknown>; }
+export declare class HardwareGateway { constructor(b: CoreBridge, caps: Set<CoreCapability>); telemetry(): Promise<unknown>; fingerprint(): Promise<unknown>; }
+export declare class StorageMgmtGateway { constructor(b: CoreBridge, caps: Set<CoreCapability>); volumes(): Promise<unknown>; createVolume(input: object): Promise<unknown>; deleteVolume(id: string): Promise<unknown>; mount(id: string, path: string): Promise<unknown>; unmount(id: string): Promise<unknown>; }
+export declare class LicenseGateway { constructor(b: CoreBridge, caps: Set<CoreCapability>); status(): Promise<unknown>; activate(sn: string, owner?: unknown): Promise<unknown>; importBundle(bundle: unknown): Promise<unknown>; renew(): Promise<unknown>; rebind(oldId: string, newHwid: unknown): Promise<unknown>; }
+export declare class UsersGateway { constructor(b: CoreBridge, caps: Set<CoreCapability>); list(): Promise<unknown>; get(id: string): Promise<unknown>; create(input: object): Promise<unknown>; update(id: string, input: object): Promise<unknown>; delete(id: string): Promise<unknown>; }
+export declare class TerminalGateway { constructor(b: CoreBridge, caps: Set<CoreCapability>); spawn(cols?: number, rows?: number): Promise<unknown>; resize(handleId: string, cols: number, rows: number): Promise<unknown>; write(handleId: string, data: string): Promise<unknown>; close(handleId: string): Promise<unknown>; }
+export declare class FilesGateway { constructor(b: CoreBridge, caps: Set<CoreCapability>); read(path: string): Promise<unknown>; write(path: string, data: string): Promise<unknown>; list(path?: string): Promise<unknown>; stat(path: string): Promise<unknown>; remove(path: string): Promise<unknown>; mkdir(path: string): Promise<unknown>; }
+export declare class AuditGateway { constructor(b: CoreBridge, caps: Set<CoreCapability>); record(entry: object): Promise<unknown>; query(filter?: object): Promise<unknown>; }
+export function validateManifest(manifest: unknown): { valid: boolean; errors: string[] };
 
 /**
  * Error class exports
