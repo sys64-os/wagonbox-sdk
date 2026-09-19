@@ -49,9 +49,9 @@
 
 ---
 
-### Phase 2: Core Gateway APIs (Week 2-3)
+### Phase 2: Core Gateway APIs (Week 2-3) — ✅ DONE (25caa26)
 
-#### TASK-004: Network Gateway (`lib/network.js` + export in `index.js`)
+#### TASK-004: Network Gateway — ✅ DONE (`lib/network.js` + export in `index.js`)
 - **Methods**:
   - `interfaces()` → `network.read`
   - `connections()` → `network.read`
@@ -59,13 +59,13 @@
   - `up(id)`, `down(id)` → `network.configure`
 - **CoreBridge Events**: `NETWORK_LIST`, `NETWORK_GET`, `NETWORK_CONFIGURE`
 
-#### TASK-005: Hardware Gateway (`lib/hardware.js`)
+#### TASK-005: Hardware Gateway — ✅ DONE (`lib/hardware.js`)
 - **Methods**:
   - `telemetry()` → `hardware.read`
   - `fingerprint()` → `hardware.read` (returns HWID object)
 - **CoreBridge Events**: `HARDWARE_TELEMETRY`, `HARDWARE_FINGERPRINT`
 
-#### TASK-006: Storage Management Gateway (`lib/storage-management.js`)
+#### TASK-006: Storage Management Gateway — ✅ DONE (`lib/storage-management.js`)
 - **Methods** (beyond workspace):
   - `volumes()` → `storage.read`
   - `createVolume(input)` → `storage.configure`
@@ -74,7 +74,7 @@
   - `unmount(id)` → `storage.configure`
 - **CoreBridge Events**: `STORAGE_VOLUMES`, `STORAGE_CREATE_VOLUME`, etc.
 
-#### TASK-007: License Gateway (`lib/license.js`)
+#### TASK-007: License Gateway — ✅ DONE (`lib/license.js`)
 - **Methods** (per license.md):
   - `status()` → `license.read`
   - `activate(serialNumber, owner)` → `license.activate`
@@ -83,7 +83,7 @@
   - `rebind(oldActivationId, newHwid)` → `license.activate`
 - **CoreBridge Events**: `LICENSE_STATUS`, `LICENSE_ACTIVATE`, `LICENSE_IMPORT`, `LICENSE_RENEW`, `LICENSE_REBIND`
 
-#### TASK-008: User Management Gateway (`lib/users.js`)
+#### TASK-008: User Management Gateway — ✅ DONE (`lib/users.js`)
 - **Methods**:
   - `list()` → `user.read`
   - `get(id)` → `user.read`
@@ -95,7 +95,7 @@
   - `addSshKey(id, key)` → `user.manage`
 - **CoreBridge Events**: `USERS_LIST`, `USERS_GET`, `USERS_CREATE`, etc.
 
-#### TASK-009: Terminal Gateway (`lib/terminal.js`)
+#### TASK-009: Terminal Gateway — ✅ DONE (`lib/terminal.js`)
 - **Methods**:
   - `spawn(cols, rows)` → `terminal.execute` (returns PTY handle)
   - `resize(handleId, cols, rows)` → `terminal.execute`
@@ -104,7 +104,7 @@
 - **CoreBridge Events**: `TERMINAL_SPAWN`, `TERMINAL_RESIZE`, `TERMINAL_WRITE`, `TERMINAL_CLOSE`
 - **Streams**: Handle stdin/stdout/stderr via event streaming
 
-#### TASK-010: File Gateway (`lib/files.js`) - Beyond Workspace
+#### TASK-010: File Gateway — ✅ DONE (`lib/files.js`) - Beyond Workspace
 - **Methods** (system-wide, requires `file.read`/`file.write`):
   - `read(path)` → `file.read` (absolute paths allowed)
   - `write(path, data)` → `file.write`
@@ -114,7 +114,7 @@
   - `mkdir(path)` → `file.write`
 - **Security**: Core validates path via jail/allowlist (not SDK)
 
-#### TASK-011: Audit Gateway (`lib/audit.js`)
+#### TASK-011: Audit Gateway — ✅ DONE (`lib/audit.js`)
 - **Methods**:
   - `record(entry)` → `audit.read` (Core records authoritative audit)
   - `query(filter)` → `audit.read`
@@ -122,36 +122,36 @@
 
 ---
 
-### Phase 3: Event System & Module Communication (Week 3)
+### Phase 3: Event System & Module Communication (Week 3) — ✅ DONE (dc2d9e5)
 
-#### TASK-012: CoreBridge Event Subscription API
+#### TASK-012: CoreBridge Event Subscription API — ✅ DONE
 - **Add to `CoreBridgeBase`**:
   - `subscribe(event, handler)` → returns `unsubscribe()`
   - `unsubscribe(event, handler)`
 - **Update `MockCoreBridge`** with event handler registry
 - **Add to `ApiClient`**: `subscribe(event, handler)`, `unsubscribe()`
 
-#### TASK-013: Module-to-Module Communication
+#### TASK-013: Module-to-Module Communication — ✅ DONE
 - **Add `MODULE_CALL` handler** in `MockCoreBridge`
 - **Add to `WagonboxModule`**: `callModule(targetModule, method, params)` (already exists, needs bridge support)
 - **Capability**: `api.call` (already in list)
 
 ---
 
-### Phase 4: Module Lifecycle & Initialization (Week 4)
+### Phase 4: Module Lifecycle & Initialization (Week 4) — ✅ DONE (dc2d9e5)
 
-#### TASK-014: Capability Negotiation in Module Init
+#### TASK-014: Capability Negotiation in Module Init — ✅ DONE
 - **Modify `WagonboxModule` constructor**:
   - Use `negotiateCapabilities(requested, granted)` from `capabilities.js`
   - Store `denied` capabilities for logging
   - Emit event if capabilities denied
 - **Update `init()`** to return negotiated capabilities
 
-#### TASK-015: Module Lifecycle Events
+#### TASK-015: Module Lifecycle Events — ✅ DONE
 - **CoreBridge Events**: `MODULE_INIT`, `MODULE_START`, `MODULE_STOP`, `MODULE_DESTROY`
 - **Add to `WagonboxModule`**: Auto-emit lifecycle events
 
-#### TASK-016: Manifest Validation
+#### TASK-016: Manifest Validation — ✅ DONE
 - **Add `lib/manifest.js`**: Validate manifest.json against schema
 - **Check**: `name` pattern, `version` semver, `sdkApi` = `wagonbox.plugin.v1`, `entryPoint` exists, `requestedCapabilities` valid
 - **Export**: `validateManifest(manifest)`
@@ -168,17 +168,17 @@
 
 ---
 
-### Phase 6: Testing & Documentation (Week 5)
+### Phase 6: Testing & Documentation (Week 5) — ⏳ IN PROGRESS
 
-#### TASK-019: Integration Tests for New Gateways
+#### TASK-019: Integration Tests for New Gateways — ✅ DONE (test/unit/gateways.test.js, 74 tests)
 - **Each gateway**: Unit tests mirroring `security-pentest.test.js` patterns
 - **Test capability enforcement**, input validation, error codes
 
-#### TASK-020: Update TypeScript Definitions
+#### TASK-020: Update TypeScript Definitions — ✅ DONE
 - **File**: `types/index.d.ts`
 - Add types for all new gateways, events, error classes
 
-#### TASK-021: Update Documentation
+#### TASK-021: Update Documentation — ⏳ NEXT
 - **Files**: `docs/04-gateways-reference.md`, `docs/03-capabilities-security.md`
 - Document new capabilities, gateways, event system
 

@@ -140,6 +140,61 @@ console.log('Metrik CPU Host:', response);
 
 ---
 
+## 5. 🌐 Network Gateway (`this.network`) — `network.read` / `network.configure`
+
+```javascript
+const ifaces = await this.network.interfaces(); // NETWORK_LIST
+const conns = await this.network.connections();
+await this.network.configure({ id: 'wan0', ipv4: 'dhcp' });
+await this.network.up('wan0'); await this.network.down('wan0');
+```
+
+## 6. 🖥️ Hardware Gateway (`this.hardware`) — `system.read`
+
+```javascript
+const tel = await this.hardware.telemetry();
+const fp = await this.hardware.fingerprint(); // { algorithm: 'wagonbox-hwid-v1', value: 'sha256:...' }
+```
+
+## 7. 💾 StorageMgmt (`this.storageMgmt`) — `storage.read` / `storage.configure`
+
+```javascript
+const vols = await this.storageMgmt.volumes();
+await this.storageMgmt.createVolume({ name: 'data', size: '10G' });
+```
+
+## 8. 🔑 License (`this.license`) — `license.read` / `license.activate`
+
+```javascript
+const st = await this.license.status();
+await this.license.activate('WB-PRO-XXXX', { email: 'ops@example.com' });
+await this.license.importBundle(signedBundle); // air-gapped
+```
+
+## 9. 👥 Users (`this.users`) — `user.read` / `user.manage`
+
+```javascript
+const users = await this.users.list(); await this.users.create({ username: 'ops' });
+```
+
+## 10. 🖥️ Terminal (`this.terminal`) — `terminal.execute`
+
+```javascript
+const h = await this.terminal.spawn(80,24); await this.terminal.write(h.handleId, 'ls\n');
+```
+
+## 11. 📁 Files (`this.files`) — `file.read` / `file.write` (system-wide, Core jail)
+
+```javascript
+await this.files.read('/etc/hosts');
+```
+
+## 12. 📜 Audit (`this.audit`) — `audit.read`
+
+```javascript
+await this.audit.record({ operation: 'my.action', result: 'success' });
+```
+
 ## 🎯 Selanjutnya
 
 Pelajari bagaimana cara membuat menu modul kamu otomatis muncul di Sidebar web panel pada [**05. Injeksi Menu ke WagonBox UI**](./05-ui-menu-injection.md).
