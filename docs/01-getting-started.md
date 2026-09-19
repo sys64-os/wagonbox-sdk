@@ -69,7 +69,9 @@ Buat file `manifest.json`:
     "shell.execute",
     "storage.read",
     "storage.write",
-    "api.register"
+    "api.register",
+    "network.read",
+    "system.read"
   ],
   "apiNamespace": "keren",
   "methods": [
@@ -98,47 +100,49 @@ Buat file `manifest.json`:
 
 ## 💻 2. Bikin Kode Utama (`src/index.js`)
 
-Bikin file `src/index.js` dan buat class yang meng-extend `WagonboxModule`:
-
 ```javascript
 import { WagonboxModule } from '@wagonbox/sdk';
 
 export default class ModulKeren extends WagonboxModule {
-  // Dipanggil pertama kali saat modul di-load
-  async onInit() {
-    console.log(`[${this.moduleId}] Modul berhasil diinisialisasi!`);
-  }
-
-  // Dipanggil saat modul diaktifkan di panel
+  async onInit() { console.log(`[${this.moduleId}] load`); }
   async onStart() {
-    // Daftarkan endpoint REST API: GET /api/v1/ext/keren/info
     await this.registerRoute('GET', '/info', 'getInfo');
+    await this.registerRoute('GET', '/network', 'getNetwork');
+    await this.registerRoute('GET', '/license', 'getLicense');
   }
-
-  // Handler fungsi untuk endpoint /info
   async getInfo() {
-    // Eksekusi perintah Linux dengan aman
-    const hostInfo = await this.shell.execute('uname', ['-a']);
-    
-    // Tulis catatan log ke storage modul
+    const h = await this.shell.execute('uname', ['-a']);
     await this.storage.write('last_run.txt', new Date().toISOString());
-
-    return {
-      status: 'online',
-      message: 'Halo dari Modul Keren!',
-      system: hostInfo.stdout.trim()
-    };
+    return { status: 'online', system: h.stdout.trim() };
   }
-
-  // Dipanggil saat modul dinonaktifkan
-  async onStop() {
-    console.log(`[${this.moduleId}] Modul dinonaktifkan.`);
-  }
+  async getNetwork() { return this.network.interfaces(); }
+  async getLicense() { return this.license.status(); }
+  async onStop() { console.log(`[${this.moduleId}] stop`); }
 }
+```
+
+### Contoh Pakai Gateway Baru
+
+```javascript
+// Network
+const ifaces = await this.network.interfaces();
+await this.network.configure({ id: 'wan0', ipv4: 'dhcp' });
+
+// Hardware
+const tel = await this.hardware.telemetry();
+const fp = await this.hardware.fingerprint();
+
+// License
+const st = await this.license.status();
+await this.license.activate('WB-PRO-XXXX', { email: 'ops@example.com' });
+
+// Terminal PTY
+const h = await this.terminal.spawn(80, 24);
+await this.terminal.write(h.handleId, 'ls\n');
 ```
 
 ---
 
 ## 🎯 Selanjutnya
 
-Setelah paham cara bikin modul dasar, yuk pelajari lebih detail tentang siklus hidup modul di [**02. Daur Hidup Modul (Lifecycle)**](./02-module-lifecycle.md).
+Pelajari siklus hidup modul di [**02. Daur Hidup Modul (Lifecycle)**](./02-module-lifecycle.md).

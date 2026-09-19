@@ -10,9 +10,9 @@ Setiap modul di WagonBox punya siklus hidup (*lifecycle hooks*) yang jelas. Core
 stateDiagram-v2
     [*] --> Inactive: Modul Terpasang (.wbmod)
     Inactive --> Initialized: onInit()
-    Initialized --> Active: onStart() (Klik Activate di UI)
+    Initialized --> Active: onStart() (Activate di UI)
     Active --> Active: onReload() (Update Pengaturan)
-    Active --> Inactive: onStop() (Klik Deactivate di UI)
+    Active --> Inactive: onStop() (Deactivate di UI)
     Inactive --> [*]: Uninstall Modul
 ```
 
@@ -21,87 +21,81 @@ stateDiagram-v2
 ## 🪝 Penjelasan Tiap Hook
 
 ### 1. `onInit()` — Inisialisasi Awal
-Hook ini dipanggil tepat saat modul pertama kali di-load ke memori VM Sandbox oleh Core.
+Dipanggil tepat saat modul di-load ke memori VM Sandbox.
 
-**Cocok digunakan untuk:**
-- Menginisialisasi variabel lokal / state modul.
-- Membaca konfigurasi default dari `this.config`.
-- Memvalidasi dependensi internal.
+**Cocok untuk:** inisialisasi state, baca config, validasi dependensi.
 
 ```javascript
 async onInit() {
   this.defaultPort = await this.config.get('port') || 8080;
-  console.log(`[${this.moduleId}] Init selesai. Port default: ${this.defaultPort}`);
+  console.log(`[${this.moduleId}] Init selesai. Port: ${this.defaultPort}`);
 }
 ```
 
 ---
 
 ### 2. `onStart()` — Mengaktifkan Modul
-Hook ini dipanggil saat modul diubah statusnya menjadi **Active** (bisa lewat toggle di web UI WagonBox atau CLI).
+Dipanggil saat modul di-activate (UI/CLI).
 
-**Cocok digunakan untuk:**
-- Mendaftarkan endpoint REST API (`this.registerRoute()`).
-- Menjalankan background timer atau cron mini internal.
-- Membuka koneksi socket atau file watcher.
+**Cocok untuk:** registerRoute, background timer, socket, file watcher.
 
 ```javascript
 async onStart() {
-  // Daftarkan route HTTP
   await this.registerRoute('GET', '/status', 'handleStatus');
-  await this.registerRoute('POST', '/restart-service', 'handleRestart');
-
-  // Contoh background interval pengecekan status (setiap 1 menit)
-  this.timer = setInterval(async () => {
-    // Jalankan task berkala
-  }, 60000);
+  this.timer = setInterval(async () => { /* cek berkala */ }, 60000);
 }
 ```
 
 ---
 
-### 3. `onStop()` — Mematikan / Graceful Shutdown
-Hook ini dipanggil saat modul diubah statusnya menjadi **Inactive** atau sebelum modul di-uninstall.
+### 3. `onStop()` — Graceful Shutdown
+Dipanggil saat modul di-deactivate atau pre-uninstall.
 
-**Wajib digunakan untuk:**
-- Mematikan `setInterval` atau `setTimeout` agar tidak terjadi *memory leak*.
-- Menutup file handle atau koneksi socket terbuka.
-- Menyimpan *state* terakhir ke storage atau database sebelum mati.
+**Wajib:** clearInterval, tutup socket, simpan state.
 
 ```javascript
 async onStop() {
-  if (this.timer) {
-    clearInterval(this.timer);
-    this.timer = null;
-  }
-  console.log(`[${this.moduleId}] Semua resource telah dibersihkan.`);
+  if (this.timer) { clearInterval(this.timer); this.timer = null; }
+  console.log(`[${this.moduleId}] resource dibersihkan`);
 }
 ```
 
 ---
 
-### 4. `onReload()` — Hot-Reload Konfigurasi
-Hook ini dipanggil jika pengguna mengubah pengaturan modul di halaman **Settings**, tanpa perlu restart service WagonBox secara keseluruhan.
+### 5. `onDestroy()` — Final Cleanup
+Dipanggil setelah `onStop` saat uninstall modul.
 
 ```javascript
-async onReload() {
-  // Ambil konfigurasi baru yang baru saja diedit admin
-  const newTimeout = await this.config.get('timeout');
-  this.timeout = newTimeout || 5000;
-  console.log(`[${this.moduleId}] Konfigurasi diperbarui! Timeout baru: ${this.timeout}ms`);
+async onDestroy() {
+  // final cleanup, delete temp files, etc.
 }
 ```
 
 ---
 
-## 💡 Tips Praktis Lifecycle
+## 📡 Lifecycle Events (Otomatis)
 
-1. **Jangan lakukan tugas berat di `onInit()`**: Usahakan `onInit()` seringan mungkin karena dipanggil saat scan bootstrapper.
-2. **Selalu bersihkan di `onStop()`**: Jangan sampai modul meninggalkan proses zombie atau memory leak di sistem host.
-3. **Async/Await Ramah**: Semua hook mendukung `async/await`, jadi kamu bisa menunggu proses I/O selesai sebelum melanjutkan status.
+Modul sekarang otomatis emit event ke Core:
+
+| Event | Trigger |
+|-------|---------|
+| `module.init` | setelah `onInit` |
+| `module.start` | setelah `onStart` |
+| `module.stop` | sebelum `onStop` |
+| `module.destroy` | setelah `onDestroy` |
+
+Core mencatat event ini untuk audit trail.
+
+---
+
+## 💡 Tips
+
+1. `onInit()` singkat (heavy task di `onStart`).
+2. Selalu bersihkan di `onStop`/`onDestroy`.
+4. `onReload()` dipanggil saat config diubah via UI.
 
 ---
 
 ## 🎯 Selanjutnya
 
-Pelajari bagaimana cara kerja sistem keamanan dan pembatasan izin di [**03. Sistem Kapabilitas & Keamanan**](./03-capabilities-security.md).
+Pelajari sistem keamanan di [**03. Kapabilitas & Keamanan**](./03-capabilities-security.md).
