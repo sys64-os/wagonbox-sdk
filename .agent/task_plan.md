@@ -29,42 +29,23 @@
 
 ## 🎯 Task Plan
 
-### Phase 1: Critical Bug Fixes & Foundation (Week 1)
+### Phase 1: Critical Bug Fixes & Foundation (Week 1) — ✅ DONE (commit 152ccde, 4484a5f)
 
-#### TASK-001: Fix CoreBridge.emit() Recursion Bug
-- **File**: `lib/core-bridge.js:63`
-- **Issue**: `this.emit(event, data)` calls itself recursively
-- **Fix**: Rename method to `emitEvent` or use `super.emit()`
-- **Test**: Verify event emission works in `MockCoreBridge`
+#### TASK-001: Fix CoreBridge.emit() Recursion Bug — ✅ DONE
+- **File**: `lib/core-bridge.js:62-64`
+- **Fix**: `async emit(event,data){this.emit}` → `emitEvent(event,data){ return super.emit(event,data) }`
+- **Type**: `types/index.d.ts` emit → emitEvent
+- **Test**: `npm test` 69 pass, `npm run build` OK
 
-#### TASK-002: Implement Structured Error Classes
-- **File**: `lib/errors.js` (new)
-- **Error Codes** (per api.md §39):
-  - `AUTH_REQUIRED`, `AUTH_INVALID`, `SESSION_EXPIRED`
-  - `FORBIDDEN`, `CAPABILITY_DENIED`
-  - `LICENSE_REQUIRED`, `LICENSE_INVALID`, `LICENSE_EXPIRED`, `ENTITLEMENT_DENIED`
-  - `MODULE_INVALID`, `MODULE_INCOMPATIBLE`, `MODULE_SIGNATURE_INVALID`
-  - `HWID_MISMATCH`, `STEP_UP_REQUIRED`, `STEP_UP_INVALID`
-  - `VALIDATION_ERROR`, `RESOURCE_NOT_FOUND`, `CONFLICT`
-  - `RATE_LIMITED`, `INTERNAL_ERROR`
-- **Export**: `WagonboxError` class with `code` + `details`
+#### TASK-002: Implement Structured Error Classes — ✅ DONE
+- **File**: `lib/errors.js` (311 lines, pure JS + JSDoc, esbuild-safe)
+- **Export**: `index.js` + `types/index.d.ts` (ErrorCode, WagonboxError + 19 subclasses)
+- **Error Codes** (api.md §39): AUTH_REQUIRED, AUTH_INVALID, SESSION_EXPIRED, FORBIDDEN, CAPABILITY_DENIED, LICENSE_REQUIRED/INVALID/EXPIRED, ENTITLEMENT_DENIED, MODULE_INVALID/INCOMPATIBLE/SIGNATURE_INVALID, HWID_MISMATCH, STEP_UP_REQUIRED/INVALID, VALIDATION_ERROR, RESOURCE_NOT_FOUND, CONFLICT, RATE_LIMITED, INTERNAL_ERROR
 
-#### TASK-003: Expand CORE_CAPABILITIES to Match Blueprint
-- **File**: `lib/constants.js`
-- **Add capabilities** (system-architecture.md §3, sdk.md §14):
-  ```javascript
-  'system.read', 'system.manage',
-  'network.read', 'network.configure',
-  'storage.read', 'storage.configure',
-  'user.read', 'user.manage',
-  'file.read', 'file.write',
-  'terminal.execute',
-  'license.read', 'license.activate',
-  'cluster.read', 'cluster.manage',
-  'audit.read',
-  'modules.read', 'modules.manage'
-  ```
-- **Update**: `CAPABILITY_GROUPS` in `lib/capabilities.js`
+#### TASK-003: Expand CORE_CAPABILITIES to Match Blueprint — ✅ DONE
+- **File**: `lib/constants.js` 8 → 26 capabilities
+- **Add**: system.read/manage, network.read/configure, storage.configure, user.read/manage, file.read/write, terminal.execute, license.read/activate, cluster.read/manage, audit.read, modules.read/manage
+- **Update**: `lib/capabilities.js` CAPABILITY_GROUPS + createCapabilitySet, `types/index.d.ts` CoreCapability union 8 → 26
 
 ---
 
