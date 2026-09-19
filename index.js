@@ -16,6 +16,7 @@ export { UsersGateway } from './lib/users.js';
 export { TerminalGateway } from './lib/terminal.js';
 export { FilesGateway } from './lib/files.js';
 export { AuditGateway } from './lib/audit.js';
+export { validateManifest } from './lib/manifest.js';
 export { CoreBridgeBase as CoreBridge, MockCoreBridge } from './lib/core-bridge.js';
 export { CapabilitySet, CAPABILITY_GROUPS, createCapabilitySet, validateCapabilities, negotiateCapabilities } from './lib/capabilities.js';
 export { PLUGIN_PROTOCOL, SDK_VERSION, DEFAULT_TIMEOUT_MS, CORE_CAPABILITIES } from './lib/constants.js';
