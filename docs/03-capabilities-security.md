@@ -12,15 +12,32 @@ Berikut adalah daftar izin resmi yang bisa kamu minta di dalam array `requestedC
 
 | Nama Kapabilitas | Apa yang Bisa Dilakukan? | Contoh Penggunaan |
 | :--- | :--- | :--- |
-| **`shell.execute`** | Menjalankan perintah Linux biner host | Menjalankan `systemctl`, `docker`, `nginx -t` |
-| **`storage.read`** | Membaca file dari workspace modul | Membaca log atau cache internal modul |
-| **`storage.write`** | Menulis file baru atau menimpa file di workspace modul | Menyimpan laporan, template, atau backup data |
-| **`storage.list`** | Melihat daftar file/folder di workspace modul | Menampilkan list file yang tersimpan |
-| **`storage.remove`** | Menghapus file di workspace modul | Membersihkan file sementara (*temp files*) |
-| **`config.read`** | Membaca data konfigurasi modul dari database terenkripsi | Mengambil API Key atau pengaturan port |
-| **`config.write`** | Menyimpan data konfigurasi modul ke database terenkripsi | Menyimpan preferensi pengguna |
-| **`api.register`** | Mendaftarkan endpoint REST API publik ke WagonBox | Membuat route `/api/v1/ext/<namespace>/...` |
-| **`api.call`** | Memanggil endpoint API milik Core atau modul lain | Integrasi antar-modul di WagonBox |
+| **`shell.execute`** | Menjalankan perintah Linux biner host | `systemctl`, `docker`, `nginx -t` |
+| **`storage.read`** | Membaca file dari workspace modul | Membaca log/cache internal |
+| **`storage.write`** | Menulis file di workspace modul | Menyimpan laporan/backup |
+| **`storage.list`** | Melihat daftar file/folder di workspace | List file tersimpan |
+| **`storage.remove`** | Menghapus file di workspace | Bersihkan temp files |
+| **`config.read`** | Membaca konfigurasi terenkripsi | Mengambil API Key/port |
+| **`config.write`** | Menyimpan konfigurasi terenkripsi | Menyimpan preferensi |
+| **`api.register`** | Mendaftarkan endpoint REST API | Route `/api/v1/ext/<ns>/...` |
+| **`api.call`** | Memanggil API Core/modul lain | Integrasi antar-modul |
+| **`system.read`** | Baca info sistem | `system.info` |
+| **`system.manage`** | Kelola sistem | Restart service |
+| **`network.read`** | Baca jaringan | `network.interfaces()` |
+| **`network.configure`** | Konfigurasi jaringan (nmcli) | `network.configure()` |
+| **`storage.configure`** | Kelola volume LVM | `storageMgmt.createVolume()` |
+| **`user.read`** | Baca user | `users.list()` |
+| **`user.manage`** | Kelola user/SSH | `users.create()` |
+| **`file.read`** | Baca file system-wide | `files.read('/etc/hosts')` |
+| **`file.write`** | Tulis file system-wide | `files.write()` |
+| **`terminal.execute`** | Terminal PTY | `terminal.spawn()` |
+| **`license.read`** | Baca lisensi | `license.status()` |
+| **`license.activate`** | Aktivasi lisensi | `license.activate()` |
+| **`cluster.read`** | Baca cluster | `cluster` |
+| **`cluster.manage`** | Kelola cluster | Join/remove node |
+| **`audit.read`** | Baca/record audit | `audit.record()` |
+| **`modules.read`** | Baca modul | List modules |
+| **`modules.manage`** | Kelola modul | Enable/disable |
 
 ---
 
@@ -85,6 +102,10 @@ await this.storage.write('data.txt', 'isi data');
 
 ---
 
+### 4. Structured Errors (api.md §39)
+
+Semua error Core memakai `WagonboxError` (`lib/errors.js`): `CAPABILITY_DENIED`, `LICENSE_REQUIRED`, `STEP_UP_REQUIRED`, dll. dengan `ERROR_HTTP_STATUS`.
+
 ## 🎯 Selanjutnya
 
-Yuk pelajari cara memakai 4 Gateway utama di [**04. Referensi Lengkap Gateway**](./04-gateways-reference.md).
+Yuk pelajari cara memakai 12 Gateway di [**04. Referensi Lengkap Gateway**](./04-gateways-reference.md).

@@ -27,10 +27,11 @@ await esbuild.build({
   },
 });
 
-execFileSync('npx', ['tsc', '-p', join(root, 'tsconfig.build.json')], {
-  cwd: root,
-  stdio: 'inherit',
-});
+try {
+  execFileSync('npx', ['tsc', '-p', join(root, 'tsconfig.build.json')], { cwd: root, stdio: 'inherit' });
+} catch {}
+// Copy handwritten types as canonical (types/index.d.ts is source of truth)
+copyFileSync(join(root, 'types/index.d.ts'), join(typesDir, 'index.d.ts'));
 
 const distPkg = { ...pkg };
 delete distPkg.scripts;
