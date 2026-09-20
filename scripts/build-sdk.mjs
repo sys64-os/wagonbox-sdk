@@ -22,6 +22,9 @@ await esbuild.build({
   external: ['zod'],
   sourcemap: true,
   target: 'node22',
+  minifyIdentifiers: false,
+  minifySyntax: false,
+  keepNames: true,
   banner: {
     js: 'import { createRequire } from "module";',
   },
