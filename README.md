@@ -2,7 +2,7 @@
 
 **Public Development SDK for WagonBox Extensions and UI Modules**
 
-*Status: **Belum terdaftar di npm registry**. Instalasi dilakukan langsung dari GitHub.*
+*Status: **Belum terdaftar di npm registry**. Instalasi langsung dari GitHub (pre-built `dist/` tersedia).*
 
 ---
 
@@ -22,7 +22,7 @@ Panduan langkah demi langkah yang ramah dan mudah dipahami:
 
 ## 📦 Instalasi
 
-Karena paket ini belum didaftarkan di npm registry, cara terbaik untuk menginstallnya adalah melalui GitHub:
+**Pre-built `dist/` sudah tersedia di repo** — tidak perlu build step:
 
 ```bash
 npm install git+https://github.com/sys64-os/wagonbox-sdk.git
@@ -35,6 +35,11 @@ Atau menggunakan shortcut di `package.json`:
   "@wagonbox/sdk": "git+https://github.com/sys64-os/wagonbox-sdk.git"
 }
 ```
+
+> **Catatan:** `peerDependencies` → `zod` harus diinstall manual di project Anda:
+> ```bash
+> npm install zod
+> ```
 
 ## 🛠️ Quick Start
 

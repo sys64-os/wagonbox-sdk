@@ -25,11 +25,16 @@ cd wagonbox-modul-keren
 npm init -y
 ```
 
-Pasang `@wagonbox/sdk`:
+Pasang `@wagonbox/sdk` dari GitHub (pre-built, tidak perlu build step):
 
 ```bash
-npm install @wagonbox/sdk
+npm install git+https://github.com/sys64-os/wagonbox-sdk.git
 ```
+
+> **Catatan:** `peerDependencies` → `zod` harus diinstall manual:
+> ```bash
+> npm install zod
+> ```
 
 ---
 
@@ -64,7 +69,7 @@ Buat file `manifest.json`:
   "sdkApi": "wagonbox.plugin.v1",
   "minCoreVersion": "1.0.0",
   "license": "MIT",
-  "entryPoint": "src/index.js",
+  "entryPoint": "dist/bundle.js",
   "requestedCapabilities": [
     "shell.execute",
     "storage.read",
