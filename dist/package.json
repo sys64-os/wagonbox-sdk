@@ -1,0 +1,21 @@
+{
+  "name": "@wagonbox/sdk",
+  "version": "1.0.0",
+  "description": "Public Development SDK for WagonBox Extensions and UI Modules",
+  "type": "module",
+  "main": "index.js",
+  "types": "types/index.d.ts",
+  "license": "MIT",
+  "files": [
+    "index.js",
+    "types",
+    "LICENSE",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "peerDependencies": {
+    "zod": "^3.23.0"
+  }
+}
