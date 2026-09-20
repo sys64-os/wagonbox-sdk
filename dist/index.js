@@ -686,7 +686,7 @@ var StorageGateway = class {
 
 // lib/constants.js
 var PLUGIN_PROTOCOL = "wagonbox.plugin.v1";
-var SDK_VERSION = "1.0.0";
+var SDK_VERSION = "1.1.0";
 var DEFAULT_TIMEOUT_MS = 3e4;
 var CORE_CAPABILITIES = [
   // Shell & Execution
