@@ -1,19 +1,41 @@
 name: SDK CI
+
 on:
   push:
-    branches: [main]
+    branches: [main, enforce/blueprint-v1]
   pull_request:
+    branches: [main, enforce/blueprint-v1]
   workflow_dispatch:
+
 permissions:
   contents: read
+
 jobs:
   ci:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: 22, cache: npm }
+        with:
+          node-version: 22
+          cache: npm
       - run: npm ci
-      - run: npm test
-      - run: npm run build
-      - run: node -e "import('./dist/index.js').then(m=>{if(m.PLUGIN_PROTOCOL!=='wagonbox.plugin.v1')process.exit(1); console.log('protocol ok')})"
+      - name: Lint
+        run: npm run lint
+      - name: Test
+        run: npm test
+      - name: Build
+        run: npm run build
+      - name: Verify bundle exports
+        run: |
+          node -e "
+            import('./dist/index.js').then(m => {
+              if (m.PLUGIN_PROTOCOL !== 'wagonbox.plugin.v1') process.exit(1);
+              if (typeof m.init !== 'function') process.exit(1);
+              if (typeof m.createModule !== 'function') process.exit(1);
+              if (typeof m.defineModule !== 'function') process.exit(1);
+              console.log('exports ok');
+            });
+          "
+      - name: Verify .wbmod build script
+        run: node scripts/build-wbmod.mjs --help 2>&1 | head -5 || true

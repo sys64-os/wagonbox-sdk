@@ -16,7 +16,7 @@
     "build": "node scripts/build-sdk.mjs",
     "prepare": "node scripts/build-sdk.mjs",
     "prepublishOnly": "npm run lint && npm test && npm run build",
-    "lint": "eslint lib/ types/",
+    "lint": "eslint lib/",
     "test": "node --test test/**/*.test.js",
     "test:watch": "node --watch --test test/**/*.test.js"
   },

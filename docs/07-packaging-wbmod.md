@@ -13,13 +13,15 @@ npx esbuild src/index.js --bundle --platform=node --format=esm --external:@wagon
 
 ---
 
-## 🔒 2. V8 Bytecode (opsional, recommended)
+## 🔒 2. V8 Bytecode (opsional, recommended untuk production)
 
 ```bash
 npm install --save-dev bytenode
 npx bytenode --compile dist/bundle.js dist/bundle.jsc
 # manifest.json: "entryPoint": "dist/bundle.jsc"
 ```
+
+> **Catatan:** `bytenode` (V8 bytecode `.jsc`) **opsional** di SDK publik. Pipeline L1 obfuscation (`javascript-obfuscator` + string encoding + `.jsc` + GPG sign) dijalankan di repo `wagonbox` Core (privat) per `build-flow.md`. SDK hanya menyediakan `scripts/build-wbmod.mjs` untuk dev encrypt+sign.
 
 ---
 
@@ -50,8 +52,9 @@ Pipeline otomatis:
 set -euo pipefail
 echo "==> Bundling..."
 npx esbuild src/index.js --bundle --platform=node --format=esm --external:@wagonbox/sdk --outfile=dist/bundle.js
-echo "==> Bytecode..."
-npx bytenode --compile dist/bundle.js dist/bundle.jsc
+echo "==> Bytecode (opsional)..."
+# npm install --save-dev bytenode  # uncomment jika ingin .jsc
+# npx bytenode --compile dist/bundle.js dist/bundle.jsc
 echo "==> Crypto .wbmod..."
 node scripts/build-wbmod.mjs manifest.json dist/myplugin.wbmod
 echo "✅ Siap: dist/myplugin.wbmod"
