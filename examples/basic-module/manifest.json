@@ -4,7 +4,7 @@
   "sdkApi": "wagonbox.plugin.v1",
   "minCoreVersion": "1.0.0",
   "license": "MIT",
-  "entryPoint": "src/index.js",
+  "entryPoint": "dist/bundle.js",
   "requestedCapabilities": [
     "shell.execute",
     "config.read",
@@ -15,12 +15,5 @@
   "apiNamespace": "hello",
   "methods": [
     "hello.sayHello"
-  ],
-  "routes": [
-    {
-      "method": "GET",
-      "path": "/hello",
-      "handler": "hello.sayHello"
-    }
   ]
 }

@@ -1,6 +1,6 @@
 # 🔌 04. Referensi Lengkap Gateway
 
-Di bab ini, kita akan bedah 4 Gateway utama yang bisa kamu akses langsung dari `this` di dalam class `WagonboxModule`.
+Di bab ini, kita akan bedah **13 Gateway** yang bisa kamu akses langsung dari `this` di dalam class `WagonboxModule`.
 
 ---
 
@@ -113,10 +113,10 @@ Digunakan untuk membuka REST API publik agar Web UI atau aplikasi eksternal bisa
 ```javascript
 async onStart() {
   // GET /api/v1/ext/<namespace>/users
-  await this.registerRoute('GET', '/users', 'handleGetUsers');
+  await this.registerRoute('/users', 'handleGetUsers');
 
   // POST /api/v1/ext/<namespace>/users
-  await this.registerRoute('POST', '/users', 'handleCreateUser');
+  await this.registerRoute('/users', 'handleCreateUser');
 }
 
 // Method handler harus dideklarasikan di dalam class yang sama
@@ -130,6 +130,8 @@ async handleCreateUser(params) {
   return { ok: true, id: 123 };
 }
 ```
+
+> **Catatan:** `registerRoute(path, handler, scopes?)` — method HTTP otomatis di-infer dari handler name atau gunakan `registerRoutes([...])` untuk multiple routes.
 
 ### Memanggil Modul Lain atau Core API:
 

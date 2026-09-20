@@ -36,7 +36,7 @@ Berikut adalah daftar izin resmi yang bisa kamu minta di dalam array `requestedC
 | **`cluster.read`** | Baca cluster | `cluster` |
 | **`cluster.manage`** | Kelola cluster | Join/remove node |
 | **`audit.read`** | Baca/record audit | `audit.record()` |
-| **`modules.read`** | Baca modul | List modules |
+| **`modules.read`** | Baca modul | `modules.list()` |
 | **`modules.manage`** | Kelola modul | Enable/disable |
 
 ---

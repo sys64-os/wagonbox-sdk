@@ -10,7 +10,7 @@
 // test/module.test.js
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
-import { MockCoreBridge } from '@wagonbox/sdk';
+import { MockCoreBridge, createModule } from '@wagonbox/sdk';
 import MyModule from '../src/index.js';
 
 describe('MyModule', () => {
@@ -18,7 +18,18 @@ describe('MyModule', () => {
     const bridge = new MockCoreBridge({
       grantedCapabilities: ['network.read', 'license.read', 'terminal.execute', 'audit.read']
     });
-    const mod = new MyModule('wagonbox-test', bridge);
+    
+    const context = {
+      moduleId: 'wagonbox-test',
+      moduleVersion: '1.0.0',
+      coreVersion: '1.0.0',
+      sdkVersion: '1.0.0',
+      grantedCapabilities: ['network.read', 'license.read', 'terminal.execute', 'audit.read'],
+      coreBridge: bridge
+    };
+    
+    const mod = createModule(context);
+    mod.module = new MyModule(); // custom module logic
     await mod.onInit();
     const ifaces = await mod.network.interfaces();
     assert.ok(Array.isArray(ifaces));
